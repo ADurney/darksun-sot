@@ -1,6 +1,8 @@
 // -----------------------------------------------------------------------------
 //    File: ds_rest_i_const.nss
 //  System: Rest (constants)
+//      URL:
+//  Authors: Aden Durney (ADurney) <aden.durney@gmail.com>
 // -----------------------------------------------------------------------------
 // Description:
 //  Constants for PW Subsystem.

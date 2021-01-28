@@ -1,6 +1,8 @@
 // -----------------------------------------------------------------------------
 //    File: ds_rest_i_main.nss
 //  System: Rest (core)
+//      URL:
+//  Authors: Aden Durney (ADurney) <aden.durney@gmail.com>
 // -----------------------------------------------------------------------------
 // Description:
 //  Core functions for PW Subsystem.
