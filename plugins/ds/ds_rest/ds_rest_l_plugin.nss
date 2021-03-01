@@ -26,7 +26,7 @@ void OnLibraryLoad()
     
     // ----- Module Events -----
     RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_REST_CANCELLED, "spellbook_OnPlayerRestCancelled", 4.0);
-    RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_REST_FINISHED,  "spellbook_OnPlayerRestFinished",  4.0);
+    RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_REST_FINISHED,  "spellbook_OnPlayerRestFinished",  5.0);
     RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_REST_STARTED,   "spellbook_OnPlayerRestStarted",   5.0);
 
     // ----- Module Events -----
