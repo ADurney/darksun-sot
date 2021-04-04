@@ -24,21 +24,21 @@
 //  fires.  It is registered as a library and event script in ds_rest_l_plugin.
 //  This function ensure the PC meets all requirements to rest as set in the
 //  Rest system configuration file.
-void spellbook_OnPlayerRestStarted();
+void ds_OnPlayerRestStarted();
 
 // ---< rest_OnPlayerRestFinished >---
 // This is an event function when the module-level OnPlayerRestFinished event
 //  fires.  It is registered as a library and event script in ds_rest_l_plugin.
 //  This function restores PC spells/feats and sets the PC up for the next
 //  resting period.
-void spellbook_OnPlayerRestFinished();
+void ds_OnPlayerRestFinished();
 
 // ---< rest_OnPlayerRestCancelled >---
 // This is an event function when the module-level OnPlayerRestCancelled event
 //  fires.  It is registered as a library and event script in ds_rest_l_plugin.
 //  This function sets PC values upon rest cancellation and removes the sleep
 //  effect.
-void spellbook_OnPlayerRestCancelled();
+void ds_OnPlayerRestCancelled();
 
 
 
@@ -48,7 +48,7 @@ void spellbook_OnPlayerRestCancelled();
 // -----------------------------------------------------------------------------
 
 
-void spellbook_OnPlayerRestStarted()
+void ds_OnPlayerRestStarted()
 {
         object oPC = GetLastPCRested();
 
@@ -62,7 +62,7 @@ void spellbook_OnPlayerRestStarted()
 
 }
 
-void spellbook_OnPlayerRestFinished()
+void ds_OnPlayerRestFinished()
 {
     int i;
     object oPC = GetLastPCRested();
@@ -74,16 +74,21 @@ void spellbook_OnPlayerRestFinished()
         switch (nClass)
         {
             case CLASS_TYPE_WIZARD:
-                    h2_SetAllowSpellRecovery(oPC, FALSE);
-                    Debug("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-                    Debug("BAD WIZARD NO SPELLS :)");
+                h2_SetAllowSpellRecovery(oPC, FALSE);
+                object oItem = GetFirstItemInInventory(oPC);
+                while (GetIsObjectValid(oItem))
+                {
+                    if (GetTag(oItem) == DS_REST_SPELLBOOK)
+                        h2_SetAllowSpellRecovery(oPC, TRUE);
+                    oItem = GetNextItemInInventory(oPC);
+                }
                 break;
         }
     }
 
 }
 
-void spellbook_OnPlayerRestCancelled()
+void ds_OnPlayerRestCancelled()
 {
 
 }

@@ -18,8 +18,12 @@
 const int H2_USE_DS_REST_SYSTEM = TRUE;
 
 
-
 //TODO
 //Require Wizards to read their spellbook before they can rest and restore spells
 
 const int DS_REST_REQUIRE_WIZARD_SPELLBOOK_READ = TRUE;
+
+
+//Tag of the spellbook item that needs to be in inventory to restore spells
+
+const string DS_REST_SPELLBOOK = "ds_rest_spellbook";

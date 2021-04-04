@@ -25,14 +25,14 @@ void OnLibraryLoad()
     object oPlugin = GetPlugin("ds");
     
     // ----- Module Events -----
-    RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_REST_CANCELLED, "spellbook_OnPlayerRestCancelled", 4.0);
-    RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_REST_FINISHED,  "spellbook_OnPlayerRestFinished",  5.0);
-    RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_REST_STARTED,   "spellbook_OnPlayerRestStarted",   5.0);
+    RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_REST_CANCELLED, "ds_OnPlayerRestCancelled", 4.0);
+    RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_REST_FINISHED,  "ds_OnPlayerRestFinished",  5.0);
+    RegisterEventScripts(oPlugin, MODULE_EVENT_ON_PLAYER_REST_STARTED,   "ds_OnPlayerRestStarted",   5.0);
 
     // ----- Module Events -----
-    RegisterLibraryScript("spellbook_OnPlayerRestCancelled", 1);
-    RegisterLibraryScript("spellbook_OnPlayerRestFinished",  2);
-    RegisterLibraryScript("spellbook_OnPlayerRestStarted",   3);
+    RegisterLibraryScript("ds_OnPlayerRestCancelled", 1);
+    RegisterLibraryScript("ds_OnPlayerRestFinished",  2);
+    RegisterLibraryScript("ds_OnPlayerRestStarted",   3);
 }
 
 void OnLibraryScript(string sScript, int nEntry)
@@ -41,9 +41,9 @@ void OnLibraryScript(string sScript, int nEntry)
     {
         
         // ----- Module Events -----
-        case 1: spellbook_OnPlayerRestCancelled(); break;
-        case 2: spellbook_OnPlayerRestFinished();  break;
-        case 3: spellbook_OnPlayerRestStarted();   break;
+        case 1: ds_OnPlayerRestCancelled(); break;
+        case 2: ds_OnPlayerRestFinished();  break;
+        case 3: ds_OnPlayerRestStarted();   break;
         
         default: CriticalError("Library function " + sScript + " not found");
     }
