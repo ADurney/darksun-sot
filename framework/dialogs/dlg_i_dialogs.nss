@@ -316,10 +316,22 @@ void ClearDialogHistory();
 // Returns the current dialog page.
 string GetDialogPage();
 
+// ---< GetDialogPageNumber >---
+// ---< dlg_i_dialogs >---
+// Returns the child page number if the current dialog page is a child page, otherwise
+// returns 0.  Returns 1 if the current page is a parent page.
+int GetDialogPageNumber();
+
+// ---< GetDialogPageParent >---
+// ---< dlg_i_dialogs >---
+// Returns the parent of the current dialog page, if it exists, otherwise returns "".
+string GetDialogPageParent();
+
 // ---< SetDialogPage >---
 // ---< dlg_i_dialogs >---
-// Sets the current dialog page to sPage.
-void SetDialogPage(string sPage);
+// Sets the current dialog page to sPage.  If sPage has continue pages, you can pass
+// nPage to select one of those pages.
+void SetDialogPage(string sPage, int nPage = 1);
 
 // ---< GetDialogNode >---
 // ---< dlg_i_dialogs >---
@@ -450,6 +462,12 @@ void AddDialogToken(string sToken, string sEvalScript = "", string sValues = "")
 // Adds all the default dialog tokens. This is called by the system during the
 // dialog init stage and need not be used by the builder.
 void AddDialogTokens();
+
+// ---< AddCachedDialogToken >---
+// ---< dlg_i_dialogs >---
+// Adds sToken and caches sValue to it.  This is a convenience function add
+// pre-defined tokens.
+void AddCachedDialogToken(string sToken, string sValue);
 
 // ---< GetCachedDialogToken >---
 // ---< dlg_i_dialogs >---
@@ -879,7 +897,35 @@ string GetDialogPage()
     return GetLocalString(DIALOG, DLG_CURRENT_PAGE);
 }
 
-void SetDialogPage(string sPage)
+int GetDialogPageNumber()
+{
+    string sPage = GetDialogPage();
+    string sPageNumber = StringParse(sPage, "#", TRUE);
+
+    if (TestStringAgainstPattern("*n", sPageNumber))
+    {
+        if (HasDialogPage(StringRemoveParsed(sPage, sPageNumber, "#", TRUE)))
+            return sPageNumber == "" ? 1 : StringToInt(sPageNumber);
+    }
+
+    return 0;
+}
+
+string GetDialogPageParent()
+{
+    string sPage = GetDialogPage();
+
+    if (GetDialogPageNumber() >= 2)
+    {
+        // Check right to left in case user used `#` in their page name
+        string sPageNumber = StringParse(sPage, "#", TRUE);
+        return StringRemoveParsed(sPage, sPageNumber, "#", TRUE);
+    }
+
+    return "";    
+}
+
+void SetDialogPage(string sPage, int nPage = 1)
 {
     string sHistory = GetLocalString(DIALOG, DLG_HISTORY);
     string sCurrent = GetLocalString(DIALOG, DLG_CURRENT_PAGE);
@@ -888,6 +934,9 @@ void SetDialogPage(string sPage)
         SetLocalString(DIALOG, DLG_HISTORY, sCurrent);
     else if (GetListItem(sHistory, 0) != sCurrent)
         SetLocalString(DIALOG, DLG_HISTORY, MergeLists(sCurrent, sHistory));
+
+    if (nPage > 1)
+        sPage += "#" + IntToString(nPage);
 
     SetLocalString(DIALOG, DLG_CURRENT_PAGE, sPage);
     SetLocalInt(DIALOG, DLG_CURRENT_PAGE, TRUE);
@@ -1080,6 +1129,12 @@ void AddDialogTokens()
     AddDialogToken("/Start",          sPrefix + "Token", "</c>");
     AddDialogToken("token",           sPrefix + "Token", "<");
     AddDialogToken("/token",          sPrefix + "Token", ">");
+}
+
+void AddCachedDialogToken(string sToken, string sValue)
+{
+    AddDialogToken(sToken);
+    CacheDialogToken(sToken, sValue);
 }
 
 string GetCachedDialogToken(string sToken)
@@ -1362,7 +1417,7 @@ int LoadDialogPage()
     string sMessage;
     string sPage = GetDialogPage();
     if (!HasDialogPage(sPage))
-        Debug(sMessage = "No dialog page found. Aborting...", DEBUG_LEVEL_WARNING);
+        Debug(sMessage = "No dialog page found. Aborting...");
     else if (GetDialogState() == DLG_STATE_ENDED)
         Debug(sMessage = "Dialog ended by the event script. Aborting...");
 
@@ -1383,8 +1438,8 @@ void MapDialogNode(int nNode, int nTarget, string sText, string sPage = "")
     int nMax = DLG_MAX_RESPONSES + 5;
     if (nNode < 0 || nNode > nMax)
     {
-        Debug("Attempted to set dialog response node " + sNode +
-              " but max is " + IntToString(nMax), DEBUG_LEVEL_ERROR);
+        Error("Attempted to set dialog response node " + sNode +
+              " but max is " + IntToString(nMax));
         return;
     }
 

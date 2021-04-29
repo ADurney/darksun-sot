@@ -29,7 +29,7 @@ void OnLibraryLoad()
         SetPluginLibraries(oPlugin, "bleed_l_plugin, corpse_l_plugin, crowd_l_plugin, deity_l_plugin, " +
             "fugue_l_plugin, fugue_l_dialog, htf_l_plugin, loot_l_plugin, rest_l_plugin, rest_l_dialog, " +
             "torch_l_plugin, unid_l_plugin, gren_l_plugin, bus_l_plugin, res_l_plugin, res_l_placeables, " +
-            "res_l_creatures");
+            "res_l_creatures, quest_l_plugin, pw_l_token");
 
         // ----- Module Events -----
         RegisterEventScripts(oPlugin, MODULE_EVENT_ON_CLIENT_ENTER,          "pw_OnClientEnter",         10.0);
@@ -96,9 +96,6 @@ void OnLibraryLoad()
     RegisterLibraryScript("pw_OnPlayerRestCancelled",  21);
     RegisterLibraryScript("pw_OnPlayerRestFinished",   22);
 
-    // ----- Tag-based Scripting -----
-    RegisterLibraryScript(H2_PLAYER_DATA_ITEM,         13);
-
     // ----- Timer Events -----
     RegisterLibraryScript("pw_SavePCLocation_OnTimerExpire", 14);
     RegisterLibraryScript("pw_ExportPCs_OnTimerExpire",      15);
@@ -121,9 +118,6 @@ void OnLibraryScript(string sScript, int nEntry)
         case 20:  pw_OnPlayerRestStarted();    break;
         case 21:  pw_OnPlayerRestCancelled();  break;
         case 22:  pw_OnPlayerRestFinished();   break;
-
-        // ----- Tag-based Scripting -----
-        case 13:  pw_playerdataitem();         break;
 
         // ----- Timer Events -----
         case 14: pw_SavePCLocation_OnTimerExpire(); break;

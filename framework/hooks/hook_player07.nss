@@ -1,17 +1,16 @@
 // -----------------------------------------------------------------------------
-//    File: dlg_dialognode07.nss
-//  System: Dynamic Dialogs (event script)
+//    File: hook_creature07.nss
+//  System: Core Framework (event script)
 //     URL: https://github.com/squattingmonk/nwn-core-framework
 // Authors: Michael A. Sinclair (Squatting Monk) <squattingmonk@gmail.com>
 // -----------------------------------------------------------------------------
-// This script should be placed in the "Actions Taken" slot of the appropriate
-// PC node in the Dynamic Dialogs system conversation. It sends an event for the
-// selected node.
+// Creature OnHeartbeat event script. Place this script on the OnHeartbeat event
+// under Creature Properties.
 // -----------------------------------------------------------------------------
 
-#include "dlg_i_dialogs"
+#include "core_i_framework"
 
 void main()
 {
-    DoDialogNode(6);
+    RunEvent(PLAYER_EVENT_ON_HEARTBEAT);
 }
