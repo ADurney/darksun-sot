@@ -13,6 +13,7 @@
 
 #include "ds_rest_i_main"
 #include "rest_i_main.nss"
+ #include "util_i_chat"
 
 // -----------------------------------------------------------------------------
 //                              Function Prototypes
@@ -83,6 +84,10 @@ void ds_OnPlayerRestFinished()
                     oItem = GetNextItemInInventory(oPC);
                 }
                 break;
+                if (!h2_GetAllowSpellRecovery(oPC))
+                {
+                    SendChatResult("You require a spellbook to restore spells on rest", oPC);
+                }
         }
     }
 
